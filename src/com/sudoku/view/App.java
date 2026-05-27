@@ -13,6 +13,10 @@ import java.util.ArrayList;
 class App {
 	private final int WIDTH_FRAME = 900;
 	private final int HEIGHT_FRAME = 600;
+	private final String COLOR_MINT = "#A2D1B3";
+	private final String COLOR_WHITE = "#FFFFFF";
+	private final Font textFieldFont = SudokuFont.getFont("Inter", 1, 18); 	
+
 	private JFrame frame;
 
 	// list of panels
@@ -27,42 +31,25 @@ class App {
 	private JPanel I_Container;
 	private ArrayList<JComponent> containers = new ArrayList<JComponent>();
 
-	// List of text fields;
-	private JTextField A_TextField_1;
-	private JTextField A_TextField_2;
-	private JTextField A_TextField_3;
-	private JTextField A_TextField_4;
-	private JTextField A_TextField_5;
-	private JTextField A_TextField_6;
-	private JTextField A_TextField_7;
-	private JTextField A_TextField_8;
-	private JTextField A_TextField_9;
-
-	private ArrayList<JComponent> A_TextFields = new ArrayList<JComponent>();
+	private JTextField[][] fields = new JTextField[9][9];
 
 	public App() { // Constructor
 		initialized();
 	}
 
 	private void initTextField() {
-		A_TextField_1 = new JTextField("1");
-		A_TextField_2 = new JTextField("1");
-		A_TextField_3 = new JTextField("1");
-		A_TextField_4 = new JTextField("1");
-		A_TextField_5 = new JTextField("1");
-		A_TextField_6 = new JTextField("1");
-		A_TextField_7 = new JTextField("1");
-		A_TextField_8 = new JTextField("1");
-		A_TextField_9 = new JTextField("1");
+		for(int row = 0; row < 9; row++) {
+			for(int col = 0; col < 9; col++) {
+				fields[row][col] = new JTextField("x");
+				fields[row][col].setHorizontalAlignment(JTextField.CENTER);
+				fields[row][col].setFont(textFieldFont);
 
-		JComponent[] textFields = {
-			A_TextField_1, A_TextField_2, A_TextField_3,
-			A_TextField_4, A_TextField_5, A_TextField_6,
-			A_TextField_7, A_TextField_8, A_TextField_9
-		};
-		
-		for(int i = 0; i < textFields.length; i++) {
-			A_TextFields.add(textFields[i]);
+				if(row % 2 == 0) {
+					fields[row][col].setBackground(Color.decode(COLOR_MINT));
+				} else {
+					fields[row][col].setBackground(Color.decode(COLOR_WHITE));
+				}
+			}
 		}
 	}
 
@@ -91,11 +78,12 @@ class App {
 	private void initialized() {
 		// Init containers
 		initContainer();
-	
-		// Init panel
 		initTextField();
-		for(int i = 0; i < A_TextFields.size(); i++) {
-			containers.get(0).add(A_TextFields.get(i));
+
+		for(int i = 0; i < fields.length; i++) {
+			for(int j = 0; j < fields[i].length; j++) {
+				containers.get(i).add(fields[i][j]);
+			}
 		}
 
 		// Init Frame
