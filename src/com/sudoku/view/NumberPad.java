@@ -13,6 +13,7 @@ import java.util.ArrayList;
 class NumberPad {
 	private static JPanel numberPanel = new JPanel(new GridLayout(2, 5, 5, 5));
 	private static JButton[] buttons = new JButton[10];
+	private static ArrayList<JButton> listOfButtons = new ArrayList<JButton>();
 	private static ImageIcon clearIcon; 
 	private static String backgroundColor = "#f2ebeb";
 	private static String foregroundColor = "#464c7d";
@@ -32,11 +33,21 @@ class NumberPad {
 		}
 
 		buttons[buttons.length - 1] = new JButton(clearIcon);
+		buttons[buttons.length - 1].setActionCommand("X");
 
 		for(int i = 0; i < buttons.length; i++) {
 			numberPanel.add(buttons[i]);
 		}
 
+
 		return numberPanel;
+	}
+
+	public static ArrayList<JButton> getAllButton() {
+		for(int i = 0; i < buttons.length; i++) {
+			listOfButtons.add(buttons[i]);
+		}
+	
+		return listOfButtons;
 	}
 }

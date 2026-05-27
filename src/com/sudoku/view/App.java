@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.BorderLayout;
 import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 class App {
@@ -44,7 +45,8 @@ class App {
 	private ArrayList<JComponent> containers = new ArrayList<JComponent>();
 
 	private JTextField[][] fields = new JTextField[9][9]; // Untuk kolom-kolom kecil
-																												
+	private JTextField selectedField = null;
+	private ButtonController buttonController;
 	// Pembungkus UI
 	private JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 15));
 	private JPanel botPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
@@ -56,11 +58,11 @@ class App {
 		initialized();
 	}
 
-
 	private void initialized() {
 		// Init containers
 		initContainer();
 		initTextField();
+		addButtonEvent();
 
 		for(int i = 0; i < fields.length; i++) {
 			for(int j = 0; j < fields[i].length; j++) {
@@ -95,11 +97,19 @@ class App {
 
 		show();
 	}
+
+	private void addButtonEvent() {
+		buttonController = new ButtonController(NumberPad.getAllButton(), fields);
+	}
 	
 	private void initTextField() {
 		for(int row = 0; row < 9; row++) {
+			final int currentRow = row;
 			for(int col = 0; col < 9; col++) {
-				fields[row][col] = new JTextField("x");
+				final int currentCol = col;
+				fields[row][col] = new JTextField();
+				fields[row][col].setEditable(false);
+				fields[row][col].setFocusable(true);
 				fields[row][col].setHorizontalAlignment(JTextField.CENTER);
 				fields[row][col].setFont(textFieldFont);
 				fields[row][col].setPreferredSize(new Dimension(50, 50));
@@ -109,6 +119,29 @@ class App {
 				} else {
 					fields[row][col].setBackground(Color.decode(COLOR_WHITE));
 				}
+
+				fields[row][col].addFocusListener(new FocusListener() {
+					@Override
+					public void focusGained(FocusEvent event) {
+						JTextField source = (JTextField) event.getSource();
+						buttonController.setActiveCell(currentRow, currentCol);
+
+						source.setBackground(Color.decode("#8f798f"));
+						source.setForeground(Color.decode(COLOR_WHITE));
+					}
+
+					@Override
+					public void focusLost(FocusEvent event) {
+						JTextField source = (JTextField) event.getSource();
+						source.setForeground(Color.BLACK);
+
+						if(currentRow % 2 == 0) {
+							source.setBackground(Color.decode(COLOR_MINT));
+						} else {
+							source.setBackground(Color.decode(COLOR_WHITE));
+						}
+					}
+				});
 			}
 		}
 	}
