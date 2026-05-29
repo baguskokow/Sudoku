@@ -6,12 +6,18 @@
 
 package com.sudoku;
 
+import java.util.Random;
+
 class RandomNumber {
-	/*
-	 * To do : 
-	 * - Bikin random number 1-9 dan nanti pakai static keyword agar
-	 *   ketika memanggil fungsi di class ini gak harus declare object
-	 *
-	 *
-	 * */
+	private static int number;
+	private static Random rand = new Random();
+
+	public static String getNumber() {
+		int number = rand.nextInt(9) + 1;
+		return String.valueOf(number); 
+	}
+
+	public static int randomRow() {
+		return rand.nextInt(9);
+	}
 }

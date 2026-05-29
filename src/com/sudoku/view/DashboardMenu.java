@@ -14,13 +14,19 @@ class DashboardMenu {
 	private ImageIcon wallpaper;
 	private ImageIcon startIcon;
 	private ImageIcon quitIcon;
+	private ImageIcon loadIcon;
+	private ImageIcon highScoresIcon;
 	private JLabel background;
 	private JButton startButton; 
 	private JButton quitButton; 
+	private JButton loadButton; 
+	private JButton highScoresButton; 
 
 	public DashboardMenu() {
 		setImage();
 		setStartButton();
+		setHighScoresButton();
+		setLoadButton();
 		setQuitButton();
 		addEvent();
 		initialized();
@@ -40,19 +46,30 @@ class DashboardMenu {
 
 	private void setQuitButton() {
 		quitButton = new Button(quitIcon, "#FFFFFF").getButton();
-		quitButton.setBounds(460, 360, 150, 50);
+		quitButton.setBounds(520, 420, 150, 50);
 	}
 
 	private void setStartButton() {
 		startButton = new Button(startIcon, "#FFFFFF").getButton();
-		startButton.setBounds(460, 300, 150, 50);
-		//startButton.setBounds(410, 330, 330, 85);
+		startButton.setBounds(520, 300, 150, 50);
+	}
+	
+	private void setLoadButton() {
+		loadButton = new Button(loadIcon, "#FFFFFF").getButton();
+		loadButton.setBounds(520, 360, 150, 50);
+	}
+
+	private void setHighScoresButton() {
+		highScoresButton = new Button(loadIcon, "#FFFFFF").getButton();
+		highScoresButton.setBounds(520, 480, 150, 50);
 	}
 	
 	private void setImage() {
 		wallpaper = new ImageHelper("src/com/sudoku/images/background.png", 1200, 600).getImageIcon();
 		startIcon = new ImageHelper("src/com/sudoku/images/play.png", 290, 130).getImageIcon();
 		quitIcon = new ImageHelper("src/com/sudoku/images/quit.png", 270, 130).getImageIcon();
+		loadIcon = new ImageHelper("src/com/sudoku/images/loadgame.png", 270, 130).getImageIcon();
+		highScoresIcon = new ImageHelper("src/com/sudoku/images/highscores.png", 270, 130).getImageIcon();
 		background = new JLabel(wallpaper);
 	}
 
@@ -65,6 +82,7 @@ class DashboardMenu {
 		menuFrame.setLayout(null);
 		menuFrame.setContentPane(background);
 		menuFrame.add(startButton);
+		menuFrame.add(loadButton);
 		menuFrame.add(quitButton);
 		show();
 	}

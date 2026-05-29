@@ -11,8 +11,8 @@ import javax.swing.*;
 public class Main {
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(() -> {
-			//App sudoku = new App();
-			DashboardMenu menu = new DashboardMenu();
+			App sudoku = new App();
+			//DashboardMenu menu = new DashboardMenu();
 		});
 	}
 }

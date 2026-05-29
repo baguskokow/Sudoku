@@ -19,6 +19,7 @@ class ButtonController implements ActionListener{
 	private String text;
 	private int activeRow;
 	private int activeCol;
+	private boolean isEditable;
 	
 	public ButtonController(ArrayList<JButton> buttons, JTextField[][] field) {
 		this.buttons = buttons;
@@ -43,10 +44,13 @@ class ButtonController implements ActionListener{
 		JButton clickedButton = (JButton) action.getSource();
 		String textTombol = clickedButton.getText();
 
-		if(textTombol.equals("X")) {
-			fields[activeRow][activeCol].setText("");
-		} else {
-			fields[activeRow][activeCol].setText(textTombol);
+
+		if(fields[activeRow][activeCol].isEditable() == true) {
+			if(textTombol.equals("X")) {
+				fields[activeRow][activeCol].setText("");
+			} else {
+				fields[activeRow][activeCol].setText(textTombol);
+			}
 		}
 	}
 }

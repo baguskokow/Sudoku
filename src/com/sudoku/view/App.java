@@ -11,6 +11,8 @@ import javax.swing.border.Border;
 import java.awt.BorderLayout;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.util.ArrayList;
 
 class App {
@@ -62,11 +64,25 @@ class App {
 		// Init containers
 		initContainer();
 		initTextField();
+		generateSudokuPuzzle();
 		addButtonEvent();
+		
+		// Ini untuk disable permanent input keyboard
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
+			@Override
+			public boolean dispatchKeyEvent(KeyEvent event) {
+				if (event.getSource() instanceof JTextField) {
+					event.consume();
+					return true;
+				}
+				return false;
+			}
+		});
 
 		for(int i = 0; i < fields.length; i++) {
 			for(int j = 0; j < fields[i].length; j++) {
-				containers.get(i).add(fields[i][j]);
+				int boxIndex = (i / 3) * 3 + (j / 3);
+				containers.get(boxIndex).add(fields[i][j]);
 			}
 		}
 
@@ -98,29 +114,60 @@ class App {
 		show();
 	}
 
+	private void generateSudokuPuzzle() {
+		SudokuGenerator.fillSudokuCell(fields, 0, 0);
+		SudokuGenerator.fillSudokuCell(fields, 3, 3);
+		SudokuGenerator.fillSudokuCell(fields, 6, 6);
+
+		boolean success = SudokuGenerator.fillRemaining(fields, 0, 0);
+
+		if(success) {
+			System.out.println("Success");
+		} else {
+			System.out.println("Failed");
+		}
+
+		SudokuGenerator.removeCell(fields, 35);
+	}
+
 	private void addButtonEvent() {
 		buttonController = new ButtonController(NumberPad.getAllButton(), fields);
 	}
-	
+
+	private void addCells() {
+		for(int row = 0; row < containers.size(); row++) {
+			for(int col = 0; col < 9; col++) {
+				//int boxIndex = (row / 3) * 3 + (col / 3);
+				containers.get(0).add(fields[row][col]);
+			}
+		}
+	}
+
+	private void addContainerToPanel() {
+		for(int i = 0; i < containers.size(); i++) {
+			boardPanel.add(containers.get(i));
+		}
+	}
+
 	private void initTextField() {
 		for(int row = 0; row < 9; row++) {
 			final int currentRow = row;
 			for(int col = 0; col < 9; col++) {
 				final int currentCol = col;
+				
 				fields[row][col] = new JTextField();
 				fields[row][col].setEditable(false);
-				//fields[row][col].setFocusable(true);
+				fields[row][col].setFocusable(true);
 				fields[row][col].setHorizontalAlignment(JTextField.CENTER);
 				fields[row][col].setFont(textFieldFont);
 				fields[row][col].setPreferredSize(new Dimension(50, 50));
 
-				if(row % 2 == 0) {
+				int boxIndex = (row / 3) * 3 + (col / 3);
+				if(boxIndex % 2 != 0) {
 					fields[row][col].setBackground(Color.decode(COLOR_MINT));
 				} else {
 					fields[row][col].setBackground(Color.decode(COLOR_WHITE));
 				}
-
-				//fields[row][col].addFocusListener(new CellFocusController(row, col, buttonController));
 
 				fields[row][col].addFocusListener(new FocusListener() {
 					@Override
@@ -137,10 +184,23 @@ class App {
 						JTextField source = (JTextField) event.getSource();
 						source.setForeground(Color.BLACK);
 
-						if(currentRow % 2 == 0) {
+						if(boxIndex % 2 != 0) {
 							source.setBackground(Color.decode(COLOR_MINT));
 						} else {
 							source.setBackground(Color.decode(COLOR_WHITE));
+						}
+					}
+				});
+
+				fields[row][col].addKeyListener(new java.awt.event.KeyAdapter() {
+					@Override
+					public void keyTyped(java.awt.event.KeyEvent event) {
+						char c = event.getKeyChar();
+
+						if((c < 0 && c > 10 ) == true) {
+							event.consume();
+						} else {
+							fields[currentRow][currentCol].setText("");
 						}
 					}
 				});
@@ -168,6 +228,10 @@ class App {
 			childContainer[i].setBorder(BorderFactory.createLineBorder(Color.decode(LINE_COLOR)));
 			containers.add(childContainer[i]);
 		}
+
+		for(int i = 0; i < containers.size(); i++) {
+			boardPanel.add(containers.get(i));
+		}		
 	}
 
 	private void setPadding() {
