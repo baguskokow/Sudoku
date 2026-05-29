@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.util.Random;
 
 class SudokuGenerator {
+	private String[][] solution = new String[9][9];
 
 	public static void fillSudokuCell(JTextField[][] fields, int startRow, int startCol) {
 		ArrayList<Integer> numbers = new ArrayList<Integer>();
@@ -121,5 +122,4 @@ class SudokuGenerator {
 			}
 		}
 	}
-
 }

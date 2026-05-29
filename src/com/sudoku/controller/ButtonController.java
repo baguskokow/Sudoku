@@ -12,6 +12,7 @@ import java.awt.BorderLayout;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Stack;
 
 class ButtonController implements ActionListener{
 	private ArrayList<JButton> buttons;
@@ -20,6 +21,8 @@ class ButtonController implements ActionListener{
 	private int activeRow;
 	private int activeCol;
 	private boolean isEditable;
+	private Stack<SudokuStep> undoStack = new Stack<>();
+	private Stack<SudokuStep> redoStack = new Stack<>();
 	
 	public ButtonController(ArrayList<JButton> buttons, JTextField[][] field) {
 		this.buttons = buttons;
@@ -37,20 +40,74 @@ class ButtonController implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent action) {
+
+		JButton clickedButton = (JButton) action.getSource();
+		String contentText = clickedButton.getText();
+		String textTombol = clickedButton.getActionCommand();
+
+		if(textTombol.equals("UNDO")) {
+			executeUndo();
+			return;
+		}
+
+		if(textTombol.equals("REDO")) {
+			executeRedo();
+			return;
+		}
+
+		if(textTombol.equals("HINT")) {
+			executeHint();
+			return;
+		}
+		
 		if(activeRow == -1 || activeCol == -1) {
 			return;
 		}
 
-		JButton clickedButton = (JButton) action.getSource();
-		String textTombol = clickedButton.getText();
-
-
 		if(fields[activeRow][activeCol].isEditable() == true) {
-			if(textTombol.equals("X")) {
-				fields[activeRow][activeCol].setText("");
+			String oldValue = fields[activeRow][activeCol].getText();
+			String newValue;
+
+			if(textTombol.equals("X") == false) {
+				newValue = textTombol;
 			} else {
-				fields[activeRow][activeCol].setText(textTombol);
+				newValue = "";
+			}
+
+			if(oldValue.equals(newValue) == false) {
+				undoStack.push(new SudokuStep(activeRow, activeCol, oldValue, newValue));
+				fields[activeRow][activeCol].setText(newValue);
 			}
 		}
+	}
+
+	public void executeHint() {
+		String[][] solution = App.getSolution();
+		if(activeRow == -1 || activeCol == -1) {
+			return;
+		}
+
+		fields[activeRow][activeCol].setText(solution[activeRow][activeCol]);
+	}
+
+	public void executeUndo() {
+		if(undoStack.isEmpty()) {
+			return;
+		}
+
+		SudokuStep lastStep = undoStack.pop();
+
+		fields[lastStep.row][lastStep.col].setText(lastStep.oldValue);
+		redoStack.push(lastStep);
+	}
+
+	public void executeRedo() {
+		if(redoStack.isEmpty()) {
+			return;
+		}
+		
+		SudokuStep lastStep = redoStack.pop();
+		fields[lastStep.row][lastStep.col].setText(lastStep.newValue);
+		undoStack.push(lastStep);
 	}
 }

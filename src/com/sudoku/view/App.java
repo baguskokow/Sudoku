@@ -14,6 +14,7 @@ import java.awt.event.*;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.util.ArrayList;
+import java.util.Stack;
 
 class App {
 	private final int WIDTH_FRAME = 1200;
@@ -55,9 +56,20 @@ class App {
 	
 	private JPanel boardPanel = new JPanel(new GridLayout(3, 3, 0, 0)); // Board Panel
 	private JPanel numberPanel = NumberPad.getPanel(); // Number Pad Panel																										
+	private JPanel functionPanel = FunctionPad.getPanel(); // Function Pad Panel																									
+																												 
+	private JButton undoButton = FunctionPad.getUndoButton(); 
+	private JButton redoButton = FunctionPad.getRedoButton(); 
+	private JButton hintButton = FunctionPad.getHintButton(); 
 
+	private static String[][] solution = new String[9][9]; // Save solution
+																												 
 	public App() { // Constructor
 		initialized();
+	}
+
+	public static String[][] getSolution() {
+			return solution;
 	}
 
 	private void initialized() {
@@ -66,6 +78,9 @@ class App {
 		initTextField();
 		generateSudokuPuzzle();
 		addButtonEvent();
+		undoButton.addActionListener(buttonController);
+		redoButton.addActionListener(buttonController);
+		hintButton.addActionListener(buttonController);
 		
 		// Ini untuk disable permanent input keyboard
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
@@ -106,6 +121,7 @@ class App {
 		numberPanel.setPreferredSize(new Dimension(250, 100));
 		botPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		botPanel.add(numberPanel);
+		botPanel.add(functionPanel);
 
 		setPadding(); // Frame Padding
 		frame.add(boardPanel, BorderLayout.CENTER);
@@ -120,6 +136,13 @@ class App {
 		SudokuGenerator.fillSudokuCell(fields, 6, 6);
 
 		boolean success = SudokuGenerator.fillRemaining(fields, 0, 0);
+
+		//Save solution
+		for(int row = 0; row < 9; row++) {
+			for(int col = 0; col < 9; col++) {
+				solution[row][col] = fields[row][col].getText();
+			}
+		}
 
 		if(success) {
 			System.out.println("Success");
@@ -188,19 +211,6 @@ class App {
 							source.setBackground(Color.decode(COLOR_MINT));
 						} else {
 							source.setBackground(Color.decode(COLOR_WHITE));
-						}
-					}
-				});
-
-				fields[row][col].addKeyListener(new java.awt.event.KeyAdapter() {
-					@Override
-					public void keyTyped(java.awt.event.KeyEvent event) {
-						char c = event.getKeyChar();
-
-						if((c < 0 && c > 10 ) == true) {
-							event.consume();
-						} else {
-							fields[currentRow][currentCol].setText("");
 						}
 					}
 				});
