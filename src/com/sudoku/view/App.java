@@ -109,7 +109,7 @@ class App {
 				final int currentCol = col;
 				fields[row][col] = new JTextField();
 				fields[row][col].setEditable(false);
-				fields[row][col].setFocusable(true);
+				//fields[row][col].setFocusable(true);
 				fields[row][col].setHorizontalAlignment(JTextField.CENTER);
 				fields[row][col].setFont(textFieldFont);
 				fields[row][col].setPreferredSize(new Dimension(50, 50));
@@ -120,30 +120,30 @@ class App {
 					fields[row][col].setBackground(Color.decode(COLOR_WHITE));
 				}
 
-				//fields[row][col].addFocusListener(new CellFocusListener(row, col, buttonController));
+				//fields[row][col].addFocusListener(new CellFocusController(row, col, buttonController));
 
-			//	fields[row][col].addFocusListener(new FocusListener() {
-			//		@Override
-			//		public void focusGained(FocusEvent event) {
-			//			JTextField source = (JTextField) event.getSource();
-			//			buttonController.setActiveCell(currentRow, currentCol);
+				fields[row][col].addFocusListener(new FocusListener() {
+					@Override
+					public void focusGained(FocusEvent event) {
+						JTextField source = (JTextField) event.getSource();
+						buttonController.setActiveCell(currentRow, currentCol);
 
-			//			source.setBackground(Color.decode("#8f798f"));
-			//			source.setForeground(Color.decode(COLOR_WHITE));
-			//		}
+						source.setBackground(Color.decode("#8f798f"));
+						source.setForeground(Color.decode(COLOR_WHITE));
+					}
 
-			//		@Override
-			//		public void focusLost(FocusEvent event) {
-			//			JTextField source = (JTextField) event.getSource();
-			//			source.setForeground(Color.BLACK);
+					@Override
+					public void focusLost(FocusEvent event) {
+						JTextField source = (JTextField) event.getSource();
+						source.setForeground(Color.BLACK);
 
-			//			if(currentRow % 2 == 0) {
-			//				source.setBackground(Color.decode(COLOR_MINT));
-			//			} else {
-			//				source.setBackground(Color.decode(COLOR_WHITE));
-			//			}
-			//		}
-			//	});
+						if(currentRow % 2 == 0) {
+							source.setBackground(Color.decode(COLOR_MINT));
+						} else {
+							source.setBackground(Color.decode(COLOR_WHITE));
+						}
+					}
+				});
 			}
 		}
 	}
