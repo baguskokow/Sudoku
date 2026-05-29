@@ -120,28 +120,30 @@ class App {
 					fields[row][col].setBackground(Color.decode(COLOR_WHITE));
 				}
 
-				fields[row][col].addFocusListener(new FocusListener() {
-					@Override
-					public void focusGained(FocusEvent event) {
-						JTextField source = (JTextField) event.getSource();
-						buttonController.setActiveCell(currentRow, currentCol);
+				//fields[row][col].addFocusListener(new CellFocusListener(row, col, buttonController));
 
-						source.setBackground(Color.decode("#8f798f"));
-						source.setForeground(Color.decode(COLOR_WHITE));
-					}
+			//	fields[row][col].addFocusListener(new FocusListener() {
+			//		@Override
+			//		public void focusGained(FocusEvent event) {
+			//			JTextField source = (JTextField) event.getSource();
+			//			buttonController.setActiveCell(currentRow, currentCol);
 
-					@Override
-					public void focusLost(FocusEvent event) {
-						JTextField source = (JTextField) event.getSource();
-						source.setForeground(Color.BLACK);
+			//			source.setBackground(Color.decode("#8f798f"));
+			//			source.setForeground(Color.decode(COLOR_WHITE));
+			//		}
 
-						if(currentRow % 2 == 0) {
-							source.setBackground(Color.decode(COLOR_MINT));
-						} else {
-							source.setBackground(Color.decode(COLOR_WHITE));
-						}
-					}
-				});
+			//		@Override
+			//		public void focusLost(FocusEvent event) {
+			//			JTextField source = (JTextField) event.getSource();
+			//			source.setForeground(Color.BLACK);
+
+			//			if(currentRow % 2 == 0) {
+			//				source.setBackground(Color.decode(COLOR_MINT));
+			//			} else {
+			//				source.setBackground(Color.decode(COLOR_WHITE));
+			//			}
+			//		}
+			//	});
 			}
 		}
 	}
