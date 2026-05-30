@@ -36,7 +36,8 @@ class DashboardMenu {
 		startButton.addActionListener(e -> {
 			menuFrame.dispose();
 
-			App sudoku = new App();
+			//App sudoku = new App();
+			DifficultyMenu difficultyMenu = new DifficultyMenu();
 		});
 
 		quitButton.addActionListener(e -> {

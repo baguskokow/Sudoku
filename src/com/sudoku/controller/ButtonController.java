@@ -23,6 +23,8 @@ class ButtonController implements ActionListener{
 	private boolean isEditable;
 	private Stack<SudokuStep> undoStack = new Stack<>();
 	private Stack<SudokuStep> redoStack = new Stack<>();
+	private static String[][] userInput = new String[9][9];
+	private static String[][] solution;
 	
 	public ButtonController(ArrayList<JButton> buttons, JTextField[][] field) {
 		this.buttons = buttons;
@@ -31,6 +33,10 @@ class ButtonController implements ActionListener{
 		for(int i = 0; i < buttons.size(); i++) {
 			buttons.get(i).addActionListener(this);
 		}
+	}
+
+	public static String[][] getUserInput() {
+		return userInput;
 	}
 
 	public void setActiveCell(int row, int col) {
@@ -77,8 +83,41 @@ class ButtonController implements ActionListener{
 			if(oldValue.equals(newValue) == false) {
 				undoStack.push(new SudokuStep(activeRow, activeCol, oldValue, newValue));
 				fields[activeRow][activeCol].setText(newValue);
+				userInput[activeRow][activeCol] = newValue;
+				checkWin();
 			}
 		}
+	}
+
+	// Sync init number with user input
+	public void syncNumber() {
+		for(int r = 0; r < 9; r++) {
+			for(int c = 0; c < 9; c++) {
+				String initialText = fields[r][c].getText();
+				userInput[r][c] = initialText;
+			}
+		}
+		
+	}
+
+	public void checkWin() {
+		solution = App.getSolution();
+		syncNumber();
+
+		for(int r = 0; r < 9; r++) {
+			for(int c = 0; c < 9; c++) {
+				String userValue = userInput[r][c];
+				String solutionValue = solution[r][c];
+
+				if(userValue == null || userValue.equals("") || !userValue.equals(solutionValue)) {
+					return;
+				}
+			}
+		}
+
+		SwingUtilities.invokeLater(() -> {
+			new WinPopUp(App.getFrame(), "05:00");
+		});
 	}
 
 	public void executeHint() {
@@ -88,6 +127,8 @@ class ButtonController implements ActionListener{
 		}
 
 		fields[activeRow][activeCol].setText(solution[activeRow][activeCol]);
+		userInput[activeRow][activeCol] = solution[activeRow][activeCol];
+		checkWin();
 	}
 
 	public void executeUndo() {
@@ -99,6 +140,8 @@ class ButtonController implements ActionListener{
 
 		fields[lastStep.row][lastStep.col].setText(lastStep.oldValue);
 		redoStack.push(lastStep);
+		userInput[lastStep.row][lastStep.col] = lastStep.oldValue;
+		checkWin();
 	}
 
 	public void executeRedo() {
@@ -109,5 +152,7 @@ class ButtonController implements ActionListener{
 		SudokuStep lastStep = redoStack.pop();
 		fields[lastStep.row][lastStep.col].setText(lastStep.newValue);
 		undoStack.push(lastStep);
+		userInput[lastStep.row][lastStep.col] = lastStep.newValue;
+		checkWin();
 	}
 }

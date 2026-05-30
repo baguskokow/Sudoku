@@ -31,7 +31,7 @@ class App {
 	private final int rightPadding = 300;
 	private final int leftPadding = 300;
 
-	private JFrame frame;
+	private static JFrame frame;
 	private Border framePadding;
 	private JPanel contentPanel;
 
@@ -62,9 +62,12 @@ class App {
 	private JButton redoButton = FunctionPad.getRedoButton(); 
 	private JButton hintButton = FunctionPad.getHintButton(); 
 
+	private String difficulty;
+
 	private static String[][] solution = new String[9][9]; // Save solution
 																												 
-	public App() { // Constructor
+	public App(String difficulty) { // Constructor
+		this.difficulty = difficulty;																	
 		initialized();
 	}
 
@@ -128,7 +131,33 @@ class App {
 		frame.add(botPanel, BorderLayout.SOUTH);
 
 		show();
+	//	if(isWin() == true) {
+	//		WinPopUp win = new WinPopUp(frame, "05:00");	
+	//	};
 	}
+
+	public static JFrame getFrame() {
+		return frame;
+	}
+
+//	private boolean isWin() {
+//		String[][] userInput = new String[9][9];
+//		userInput = ButtonController.getUserInput();
+//		if(userInput.length == solution.length) {
+//			for(int row = 0; row < 9; row++) {
+//				for(int col = 0; col < 9; col++) {
+//					String currentUserInput = userInput[row][col];
+//					String currentSolution = solution[row][col];
+//					System.out.println(row + "," + col + "->" + currentUserInput);
+//
+//					if(!currentUserInput.equals(currentSolution)) {
+//						return false;
+//					}
+//				}
+//			}
+//		}
+//		return true;
+//	}
 
 	private void generateSudokuPuzzle() {
 		SudokuGenerator.fillSudokuCell(fields, 0, 0);
@@ -150,7 +179,14 @@ class App {
 			System.out.println("Failed");
 		}
 
-		SudokuGenerator.removeCell(fields, 35);
+		if(difficulty.equals("EASY")) {
+			SudokuGenerator.removeCell(fields, 45);
+		} else if(difficulty.equals("MEDIUM")) {
+			SudokuGenerator.removeCell(fields, 51);
+		} else if(difficulty.equals("HARD")) {
+			SudokuGenerator.removeCell(fields, 56);
+		}
+
 	}
 
 	private void addButtonEvent() {
