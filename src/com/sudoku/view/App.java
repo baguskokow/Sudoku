@@ -55,17 +55,22 @@ class App {
 	private JPanel botPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
 	
 	private JPanel boardPanel = new JPanel(new GridLayout(3, 3, 0, 0)); // Board Panel
-	private JPanel numberPanel = NumberPad.getPanel(); // Number Pad Panel																										
-	private JPanel functionPanel = FunctionPad.getPanel(); // Function Pad Panel																									
+	private NumberPad numberPad = new NumberPad();																										 
+	private JPanel numberPanel = numberPad.getPanel();
+
+	private FunctionPad functionPad = new FunctionPad();
+	private JPanel functionPanel = functionPad.getPanel();
 																												 
-	private JButton undoButton = FunctionPad.getUndoButton(); 
-	private JButton redoButton = FunctionPad.getRedoButton(); 
-	private JButton hintButton = FunctionPad.getHintButton(); 
+	private JButton undoButton = functionPad.getUndoButton(); 
+	private JButton redoButton = functionPad.getRedoButton(); 
+	private JButton hintButton = functionPad.getHintButton(); 
+	private JButton saveButton = functionPad.getSaveButton(); 
+	private JButton quitButton = functionPad.getQuitButton(); 
 
 	private String difficulty;
 
 	private static String[][] solution = new String[9][9]; // Save solution
-																												 
+																												 //
 	public App(String difficulty) { // Constructor
 		this.difficulty = difficulty;																	
 		initialized();
@@ -75,15 +80,25 @@ class App {
 			return solution;
 	}
 
+	public static void killFrame() { 
+		frame.dispose();
+	}
+
 	private void initialized() {
 		// Init containers
 		initContainer();
 		initTextField();
-		generateSudokuPuzzle();
+		if(difficulty == null) {
+			loadSudokuPuzzle();
+		} else {
+			generateSudokuPuzzle();
+		}
 		addButtonEvent();
 		undoButton.addActionListener(buttonController);
 		redoButton.addActionListener(buttonController);
 		hintButton.addActionListener(buttonController);
+		saveButton.addActionListener(buttonController);
+		quitButton.addActionListener(buttonController);
 		
 		// Ini untuk disable permanent input keyboard
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
@@ -159,6 +174,22 @@ class App {
 //		return true;
 //	}
 
+	public void loadSudokuPuzzle() {
+		String[][] board = SaveData.getBoard();
+		boolean[][] editable = SaveData.getEditable();
+		for(int r = 0; r < 9; r++) {
+			for(int c = 0; c < 9; c++) {
+				if(board[r][c].equals("0")) {
+					fields[r][c].setText("");
+				} else {
+					fields[r][c].setText(board[r][c]);
+				}
+
+				fields[r][c].setEditable(editable[r][c]);
+			}
+		}
+	}
+
 	private void generateSudokuPuzzle() {
 		SudokuGenerator.fillSudokuCell(fields, 0, 0);
 		SudokuGenerator.fillSudokuCell(fields, 3, 3);
@@ -185,12 +216,14 @@ class App {
 			SudokuGenerator.removeCell(fields, 51);
 		} else if(difficulty.equals("HARD")) {
 			SudokuGenerator.removeCell(fields, 56);
+		} else {
+			
 		}
 
 	}
 
 	private void addButtonEvent() {
-		buttonController = new ButtonController(NumberPad.getAllButton(), fields);
+		buttonController = new ButtonController(numberPad.getAllButton(), fields, this);
 	}
 
 	private void addCells() {

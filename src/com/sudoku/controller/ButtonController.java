@@ -15,8 +15,10 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 class ButtonController implements ActionListener{
-	private ArrayList<JButton> buttons;
+	private ArrayList<JButton> buttons = new ArrayList<JButton>();
+	private ArrayList<JButton> functionButtons = new ArrayList<JButton>();
 	private JTextField[][] fields;
+	private ArrayList<String> listOfState;
 	private String text;
 	private int activeRow;
 	private int activeCol;
@@ -25,10 +27,12 @@ class ButtonController implements ActionListener{
 	private Stack<SudokuStep> redoStack = new Stack<>();
 	private static String[][] userInput = new String[9][9];
 	private static String[][] solution;
+	private App app;
 	
-	public ButtonController(ArrayList<JButton> buttons, JTextField[][] field) {
+	public ButtonController(ArrayList<JButton> buttons, JTextField[][] field, App app) {
 		this.buttons = buttons;
 		this.fields = field;
+		this.app = app;
 
 		for(int i = 0; i < buttons.size(); i++) {
 			buttons.get(i).addActionListener(this);
@@ -65,6 +69,17 @@ class ButtonController implements ActionListener{
 			executeHint();
 			return;
 		}
+
+		if(textTombol.equals("SAVE")) {
+			executeSave();
+			return;
+		}
+		
+		if(textTombol.equals("QUIT")) {
+			executeQuit();
+			return;
+		}
+
 		
 		if(activeRow == -1 || activeCol == -1) {
 			return;
@@ -118,6 +133,16 @@ class ButtonController implements ActionListener{
 		SwingUtilities.invokeLater(() -> {
 			new WinPopUp(App.getFrame(), "05:00");
 		});
+	}
+
+	private void executeSave() {
+		SaveData.save(fields);
+	}
+
+	private void executeQuit() {
+		System.out.println("Hi from quit!");
+		App.killFrame();
+		DashboardMenu.setVisible();
 	}
 
 	public void executeHint() {

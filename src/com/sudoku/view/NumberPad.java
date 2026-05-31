@@ -11,15 +11,15 @@ import java.awt.*;
 import java.util.ArrayList;
 
 class NumberPad {
-	private static JPanel numberPanel = new JPanel(new GridLayout(2, 5, 5, 5));
-	private static JButton[] buttons = new JButton[10];
-	private static ArrayList<JButton> listOfButtons = new ArrayList<JButton>();
-	private static ImageIcon clearIcon; 
-	private static String backgroundColor = "#f2ebeb";
-	private static String foregroundColor = "#464c7d";
-	private static Font buttonFont = SudokuFont.getFont("Inter", 1, 12);
+	private JPanel numberPanel = new JPanel(new GridLayout(2, 5, 5, 5));
+	private JButton[] buttons = new JButton[10];
+	private ArrayList<JButton> listOfButtons = new ArrayList<JButton>();
+	private ImageIcon clearIcon; 
+	private String backgroundColor = "#f2ebeb";
+	private String foregroundColor = "#464c7d";
+	private Font buttonFont = SudokuFont.getFont("Inter", 1, 12);
 
-	public static JPanel getPanel() {
+	public JPanel getPanel() {
 		ImageHelper helperIcon = new ImageHelper("src/com/sudoku/images/clearIcon.png", 20, 20);
 		clearIcon = helperIcon.getImageIcon();
 
@@ -43,7 +43,7 @@ class NumberPad {
 		return numberPanel;
 	}
 
-	public static ArrayList<JButton> getAllButton() {
+	public ArrayList<JButton> getAllButton() {
 		for(int i = 0; i < buttons.length; i++) {
 			listOfButtons.add(buttons[i]);
 		}

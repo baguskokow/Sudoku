@@ -12,16 +12,19 @@ import java.util.ArrayList;
 
 
 class FunctionPad {
-	private static JPanel functionPanel = new JPanel(new GridLayout(1, 3, 0, 1));
-	private static JButton[] buttons = new JButton[3];
-	private static ImageIcon undoIcon;
-	private static ImageIcon redoIcon;
-	private static ImageIcon hintIcon;
-	private static String backgroundColor = "#f2ebeb";
+	private JPanel functionPanel = new JPanel(new GridLayout(2, 3, 0, 1));
+	private JButton[] buttons = new JButton[5];
+	private ImageIcon undoIcon;
+	private ImageIcon redoIcon;
+	private ImageIcon hintIcon;
+	private ImageIcon saveIcon;
+	private ImageIcon quitIcon;
+	private String backgroundColor = "#f2ebeb";
 	
-	public static JPanel getPanel() {
+	public JPanel getPanel() {
 		setImage();
-		ImageIcon[] icons = {undoIcon, redoIcon, hintIcon};
+		
+		ImageIcon[] icons = {undoIcon, redoIcon, hintIcon, saveIcon, quitIcon};
 
 		for(int i = 0; i < icons.length; i++) {
 			buttons[i] = new Button(icons[i], backgroundColor).getButton();	
@@ -30,6 +33,8 @@ class FunctionPad {
 		buttons[0].setActionCommand("UNDO");
 		buttons[1].setActionCommand("REDO");
 		buttons[2].setActionCommand("HINT");
+		buttons[3].setActionCommand("SAVE");
+		buttons[4].setActionCommand("QUIT");
 
 		for(int i = 0; i < buttons.length; i++) {
 			functionPanel.add(buttons[i]);
@@ -38,21 +43,31 @@ class FunctionPad {
 		return functionPanel;
 	}
 
-	private static void setImage() {
+	private void setImage() {
 		undoIcon = new ImageHelper("src/com/sudoku/images/undo.png", 20, 20).getImageIcon();
 		redoIcon = new ImageHelper("src/com/sudoku/images/redo.png", 20, 20).getImageIcon();
 		hintIcon = new ImageHelper("src/com/sudoku/images/hint.png", 20, 20).getImageIcon();
+		saveIcon = new ImageHelper("src/com/sudoku/images/save.png", 20, 20).getImageIcon();
+		quitIcon = new ImageHelper("src/com/sudoku/images/quitGame.png", 20, 20).getImageIcon();
 	}
 
-	public static JButton getUndoButton() {
+	public JButton getUndoButton() {
 		return buttons[0];
 	}
 
-	public static JButton getRedoButton() {
+	public JButton getRedoButton() {
 		return buttons[1];
 	}
 
-	public static JButton getHintButton() {
+	public JButton getHintButton() {
 		return buttons[2];
+	}
+
+	public JButton getSaveButton() {
+		return buttons[3];
+	}
+
+	public JButton getQuitButton() {
+		return buttons[4];
 	}
 }

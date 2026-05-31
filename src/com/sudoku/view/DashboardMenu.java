@@ -10,7 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 
 class DashboardMenu {
-	private JFrame menuFrame;
+	private static JFrame menuFrame;
 	private ImageIcon wallpaper;
 	private ImageIcon startIcon;
 	private ImageIcon quitIcon;
@@ -34,15 +34,24 @@ class DashboardMenu {
 	
 	private void addEvent() {
 		startButton.addActionListener(e -> {
-			menuFrame.dispose();
+			menuFrame.setVisible(false);
 
 			//App sudoku = new App();
 			DifficultyMenu difficultyMenu = new DifficultyMenu();
 		});
 
+		loadButton.addActionListener(e -> {
+			menuFrame.setVisible(false);
+			LoadMenu loadMenu = new LoadMenu();
+		});
+
 		quitButton.addActionListener(e -> {
 			System.exit(0);
 		});
+	}
+
+	public static void setVisible() {
+		menuFrame.setVisible(true);
 	}
 
 	private void setQuitButton() {
