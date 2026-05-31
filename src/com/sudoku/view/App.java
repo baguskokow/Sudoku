@@ -208,7 +208,7 @@ class App {
 		}
 
 		if(difficulty.equals("EASY")) {
-			SudokuGenerator.removeCell(fields, 1);
+			SudokuGenerator.removeCell(fields, 45);
 		} else if(difficulty.equals("MEDIUM")) {
 			SudokuGenerator.removeCell(fields, 51);
 		} else if(difficulty.equals("HARD")) {
