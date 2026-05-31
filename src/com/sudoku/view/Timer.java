@@ -48,6 +48,14 @@ class Timer {
 		timer.stop();
 	}
 
+	public void setTime(String savedTime) {
+		String[] parts = savedTime.split(":");
+		menit = Integer.parseInt(parts[0]);
+		detik = Integer.parseInt(parts[1]);
+		seconds = (menit * 60) + detik;
+		timeLabel.setText(savedTime);
+	}
+
 	public String getTime() {
 		return timeLabel.getText();
 	}

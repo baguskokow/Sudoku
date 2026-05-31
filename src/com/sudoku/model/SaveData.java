@@ -13,14 +13,14 @@ import java.util.Scanner;
 class SaveData {
 	private static String[][] userInput = new String[9][9];
 	private static String[][] board = new String[9][9];
+	private static String savedTime;
 	private static boolean[][] editable = new boolean[9][9];
 	private static final String PATH = "src/com/sudoku/savedata/";
 
 	// Ini nanti dibikin dinamik nama filenya
 	
-	public static void save(JTextField[][] fields) {
+	public static void save(JTextField[][] fields, Timer timer) {
 		String fileName = PATH + ListState.generateFileName();
-		System.out.println(fileName);
 		try {
 			FileWriter file = new FileWriter(fileName);
 
@@ -59,9 +59,11 @@ class SaveData {
 				}
 				file.write("\n");
 			}
+			
+			file.write("[TIME]\n");
+			file.write(timer.getTime() + "\n");
 
 			file.close();
-			System.out.println("Game Saved!");
 
 		} catch (Exception e) {
 			System.out.println("Error save!");	
@@ -90,6 +92,12 @@ class SaveData {
 				}
 			}
 
+			read.nextLine();
+			read.nextLine(); // [TIME]
+
+			savedTime = read.next();
+			System.out.println(savedTime);
+
 			read.close();
 		} catch(Exception e) {
 			System.out.println("Failed to read state");
@@ -102,5 +110,9 @@ class SaveData {
 
 	public static boolean[][] getEditable() {
 		return editable;
+	}
+
+	public static String getSavedTime() {
+		return savedTime;
 	}
 }

@@ -24,6 +24,7 @@ class App {
 	private final String LINE_COLOR = "#4a4444";
 	private final Font textFieldFont = SudokuFont.getFont("Inter", 1, 18); 	
 	private ImageIcon clearIcon;
+	private String savedTime;
 	
 	// Frame Padding
 	private final int topPadding = 30;
@@ -74,8 +75,13 @@ class App {
 
 	private static String[][] solution = new String[9][9]; // Save solution
 																												 //
-	public App(String difficulty) { // Constructor
+	public App(String difficulty) {
+		this(difficulty, null);
+	}
+
+	public App(String difficulty, String savedTime) { // Constructor
 		this.difficulty = difficulty;																	
+		this.savedTime = savedTime;
 		initialized();
 	}
 
@@ -150,6 +156,10 @@ class App {
 		frame.add(botPanel, BorderLayout.SOUTH);
 
 		show();
+		if(savedTime != null) {
+			timer.setTime(savedTime);
+		}
+		
 		timer.setStartTimer();
 	}
 

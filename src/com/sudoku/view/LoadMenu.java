@@ -56,22 +56,9 @@ class LoadMenu {
 	}
 
 	public static void killFrame() {
-		System.out.println("Dispose load menu : " + loadFrame);
 		if(loadFrame != null) {
 			loadFrame.dispose();
 			loadFrame = null;
-		}
-	}
-
-	private void printFile() {
-		for(int i = 0; i < totalState; i++) {
-			System.out.println(listOfState.get(i));
-		}
-	}
-
-	private void printModified() {
-		for(int i = 0; i < totalState; i++) {
-			System.out.println(listOfLastModified.get(i));
 		}
 	}
 
@@ -91,10 +78,10 @@ class LoadMenu {
 			String nameState = listOfState.get(i);
 
 			buttonState.addActionListener(e -> {
-				System.out.println("Read state from " + nameState);
 				SaveData.read(nameState);
+				String savedTime = SaveData.getSavedTime();
 				loadFrame.dispose();
-				new App(null);
+				new App(null, savedTime);
 			});	
 		}
 	}
@@ -126,7 +113,6 @@ class LoadMenu {
 	private void countOfState() {
 		ArrayList<String> tempList = new ArrayList<String>();
 		tempList = listState.getAllState();
-		System.out.println(tempList);
 		listOfState.clear();
 		for(int i = 0; i < tempList.size(); i++) {
 			String nameState = tempList.get(i).replace(".txt", "");
@@ -134,7 +120,6 @@ class LoadMenu {
 		}
 
 		Collections.sort(listOfState, Collections.reverseOrder());
-		System.out.println(listOfState);
 		totalState = listOfState.size();
 	}
 

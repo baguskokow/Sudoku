@@ -147,12 +147,11 @@ class ButtonController implements ActionListener{
 	}
 
 	private void executeSave() {
-		SaveData.save(fields);
+		SaveData.save(fields, timer);
 		Notification.show("Game Saved!");
 	}
 
 	private void executePause() {
-		System.out.println("Hi from pause!");
 		timer.setStopTimer();
 		SwingUtilities.invokeLater(() -> {
 			new PausePopUp(App.getFrame(), timer);
@@ -160,7 +159,6 @@ class ButtonController implements ActionListener{
 	}
 
 	private void executeQuit() {
-		System.out.println("Hi from quit!");
 		App.killFrame();
 		DashboardMenu.setVisible();
 	}
