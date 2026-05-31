@@ -57,6 +57,7 @@ class App {
 	private JPanel boardPanel = new JPanel(new GridLayout(3, 3, 0, 0)); // Board Panel
 	private NumberPad numberPad = new NumberPad();																										 
 	private JPanel numberPanel = numberPad.getPanel();
+	private JPanel timePanel = Timer.getPanel();
 
 	private FunctionPad functionPad = new FunctionPad();
 	private JPanel functionPanel = functionPad.getPanel();
@@ -142,37 +143,39 @@ class App {
 		botPanel.add(functionPanel);
 
 		setPadding(); // Frame Padding
+		frame.add(timePanel, BorderLayout.NORTH);
 		frame.add(boardPanel, BorderLayout.CENTER);
 		frame.add(botPanel, BorderLayout.SOUTH);
 
 		show();
-	//	if(isWin() == true) {
-	//		WinPopUp win = new WinPopUp(frame, "05:00");	
-	//	};
+		Timer.setStartTimer();
+		if(isWin() == true) {
+			WinPopUp win = new WinPopUp(frame, Timer.getTime());	
+		};
 	}
 
 	public static JFrame getFrame() {
 		return frame;
 	}
 
-//	private boolean isWin() {
-//		String[][] userInput = new String[9][9];
-//		userInput = ButtonController.getUserInput();
-//		if(userInput.length == solution.length) {
-//			for(int row = 0; row < 9; row++) {
-//				for(int col = 0; col < 9; col++) {
-//					String currentUserInput = userInput[row][col];
-//					String currentSolution = solution[row][col];
-//					System.out.println(row + "," + col + "->" + currentUserInput);
-//
-//					if(!currentUserInput.equals(currentSolution)) {
-//						return false;
-//					}
-//				}
-//			}
-//		}
-//		return true;
-//	}
+	private boolean isWin() {
+		String[][] userInput = new String[9][9];
+		userInput = ButtonController.getUserInput();
+		if(userInput.length == solution.length) {
+			for(int row = 0; row < 9; row++) {
+				for(int col = 0; col < 9; col++) {
+					String currentUserInput = userInput[row][col];
+					String currentSolution = solution[row][col];
+					System.out.println(row + "," + col + "->" + currentUserInput);
+
+					if(!currentUserInput.equals(currentSolution)) {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
 
 	public void loadSudokuPuzzle() {
 		String[][] board = SaveData.getBoard();
@@ -211,7 +214,7 @@ class App {
 		}
 
 		if(difficulty.equals("EASY")) {
-			SudokuGenerator.removeCell(fields, 45);
+			SudokuGenerator.removeCell(fields, 5);
 		} else if(difficulty.equals("MEDIUM")) {
 			SudokuGenerator.removeCell(fields, 51);
 		} else if(difficulty.equals("HARD")) {

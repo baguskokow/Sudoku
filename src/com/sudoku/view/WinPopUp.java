@@ -42,7 +42,7 @@ class WinPopUp {
 		winLabel = new JLabel(popupIcon);
 		winLabel.setBounds(0, 50, 400, 400);
 
-		timeLabel = new JLabel("05:00");
+		timeLabel = new JLabel(Timer.getTime());
 		timeLabel.setBounds(180, 245, 50, 50);
 		timeLabel.setFont(labelFont);
 		timeLabel.setForeground(Color.decode("#adaba5"));
@@ -54,8 +54,8 @@ class WinPopUp {
 		dialog.add(timeLabel);
 		dialog.add(winLabel);
 		dialog.add(okButton);
+		Timer.setStopTimer();	
 		dialog.setVisible(true);
-		
 	}
 
 	private void addEvent() {
