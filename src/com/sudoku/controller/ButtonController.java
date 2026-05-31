@@ -85,6 +85,11 @@ class ButtonController implements ActionListener{
 			return;
 		}
 
+		if(textTombol.equals("PAUSE")) {
+			executePause();
+			return;
+		}
+
 		
 		if(activeRow == -1 || activeCol == -1) {
 			return;
@@ -143,6 +148,15 @@ class ButtonController implements ActionListener{
 
 	private void executeSave() {
 		SaveData.save(fields);
+		Notification.show("Game Saved!");
+	}
+
+	private void executePause() {
+		System.out.println("Hi from pause!");
+		timer.setStopTimer();
+		SwingUtilities.invokeLater(() -> {
+			new PausePopUp(App.getFrame(), timer);
+		});
 	}
 
 	private void executeQuit() {

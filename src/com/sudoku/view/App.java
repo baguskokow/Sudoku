@@ -68,6 +68,7 @@ class App {
 	private JButton hintButton = functionPad.getHintButton(); 
 	private JButton saveButton = functionPad.getSaveButton(); 
 	private JButton quitButton = functionPad.getQuitButton(); 
+	private JButton pauseButton = functionPad.getPauseButton(); 
 
 	private String difficulty;
 
@@ -100,6 +101,7 @@ class App {
 		hintButton.addActionListener(buttonController);
 		saveButton.addActionListener(buttonController);
 		quitButton.addActionListener(buttonController);
+		pauseButton.addActionListener(buttonController);
 		
 		// Ini untuk disable permanent input keyboard
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {

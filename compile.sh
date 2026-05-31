@@ -9,6 +9,7 @@ javac -d bin src/com/sudoku/Main.java \
 	src/com/sudoku/view/DashboardMenu.java \
 	src/com/sudoku/view/DifficultyMenu.java \
 	src/com/sudoku/view/WinPopUp.java \
+	src/com/sudoku/view/PausePopUp.java \
 	src/com/sudoku/model/RandomNumber.java \
 	src/com/sudoku/model/SudokuGenerator.java \
 	src/com/sudoku/model/SaveData.java \
@@ -16,6 +17,7 @@ javac -d bin src/com/sudoku/Main.java \
 	src/com/sudoku/view/FunctionPad.java \
 	src/com/sudoku/view/LoadMenu.java \
 	src/com/sudoku/view/Timer.java \
+	src/com/sudoku/view/Notification.java \
 
 
 
