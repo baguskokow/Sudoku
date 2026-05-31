@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.awt.event.*;
 import javax.swing.border.Border;
 import java.awt.BorderLayout;
+import java.util.Collections;
 
 class LoadMenu {
 	private ArrayList<String> listOfState = new ArrayList<String>();
@@ -131,6 +132,9 @@ class LoadMenu {
 			String nameState = tempList.get(i).replace(".txt", "");
 			listOfState.add(tempList.get(i));
 		}
+
+		Collections.sort(listOfState, Collections.reverseOrder());
+		System.out.println(listOfState);
 		totalState = listOfState.size();
 	}
 
