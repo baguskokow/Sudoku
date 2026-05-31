@@ -29,7 +29,6 @@ class LoadMenu {
 	private final Font buttonFont = SudokuFont.getFont("Inter", 1, 18);
 	private final String backgroundColor = "#FFFFFF";
 	private final String foregroundColor = "#000000";
-	private ButtonController buttonController;
 
 	// Frame Padding
 	private final int topPadding = 30;
@@ -126,6 +125,7 @@ class LoadMenu {
 	private void countOfState() {
 		ArrayList<String> tempList = new ArrayList<String>();
 		tempList = listState.getAllState();
+		System.out.println(tempList);
 		listOfState.clear();
 		for(int i = 0; i < tempList.size(); i++) {
 			String nameState = tempList.get(i).replace(".txt", "");

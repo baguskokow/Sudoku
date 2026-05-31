@@ -12,15 +12,17 @@ import java.util.Scanner;
 
 class SaveData {
 	private static String[][] userInput = new String[9][9];
-	private static String path = "src/com/sudoku/savedata/state.txt";
 	private static String[][] board = new String[9][9];
 	private static boolean[][] editable = new boolean[9][9];
+	private static final String PATH = "src/com/sudoku/savedata/";
 
 	// Ini nanti dibikin dinamik nama filenya
 	
 	public static void save(JTextField[][] fields) {
+		String fileName = PATH + ListState.generateFileName();
+		System.out.println(fileName);
 		try {
-			FileWriter file = new FileWriter(path);
+			FileWriter file = new FileWriter(fileName);
 
 			file.write("[BOARD]\n");
 			
@@ -68,8 +70,8 @@ class SaveData {
 
 	public static void read(String fileName) {
 		try {
-		//	Scanner read = new Scanner(new FileReader(fileName));
-			Scanner read = new Scanner(new FileReader("src/com/sudoku/savedata/state.txt"));
+			Scanner read = new Scanner(new FileReader(PATH + fileName));
+			//Scanner read = new Scanner(new FileReader("src/com/sudoku/savedata/state.txt"));
 
 			read.nextLine(); //[Board]
 

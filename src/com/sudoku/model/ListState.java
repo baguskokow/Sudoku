@@ -14,10 +14,10 @@ import java.text.SimpleDateFormat;
 class ListState {
 	private String path = "src/com/sudoku/savedata/";
 	private File directory = new File(path);
-	private ArrayList<String> listOfState = new ArrayList<String>();
 	private String lastModified;
 
 	public ArrayList<String> getAllState() {
+		ArrayList<String> listOfState = new ArrayList<String>();
 		File[] files = directory.listFiles();
 	
 		if(files != null) {
@@ -40,5 +40,12 @@ class ListState {
 			return sdf.format(date);
 		}
 		return "Data tidak ditemukan";
+	}
+
+	public static String generateFileName() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+		String timestamp = sdf.format(new Date());
+
+		return timestamp + ".txt";
 	}
 }
