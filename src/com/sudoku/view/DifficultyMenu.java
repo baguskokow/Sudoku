@@ -14,17 +14,20 @@ class DifficultyMenu {
 	private JButton easyButton;
 	private JButton mediumButton;
 	private JButton hardButton;
+	private JButton backButton;
 	private JLabel background;
 	private ImageIcon wallpaper;
 	private ImageIcon easyIcon;
 	private ImageIcon mediumIcon;
 	private ImageIcon hardIcon;
+	private ImageIcon backIcon;
 	
 	public DifficultyMenu() {
 		setImage();
 		setEasyButton();
 		setMediumButton();
 		setHardButton();
+		setBackButton();
 		addEvent();
 		initialized();
 	}
@@ -40,6 +43,7 @@ class DifficultyMenu {
 		difficultyFrame.add(easyButton);
 		difficultyFrame.add(mediumButton);
 		difficultyFrame.add(hardButton);
+		difficultyFrame.add(backButton);
 		show();
 	}
 
@@ -62,6 +66,11 @@ class DifficultyMenu {
 			difficultyFrame.dispose();
 			App sudoku = new App("HARD");
 		});
+		
+		backButton.addActionListener(e -> {
+			difficultyFrame.dispose();
+			DashboardMenu.setVisible();
+		});
 	
 	}
 
@@ -80,11 +89,17 @@ class DifficultyMenu {
 		hardButton.setBounds(520, 420, 150, 50);
 	}
 
+	private void setBackButton() {
+		backButton = new Button(backIcon, "#FFFFFF").getButton();
+		backButton.setBounds(520, 480, 150, 50);
+	}
+
 	private void setImage() {
 		wallpaper = new ImageHelper("src/com/sudoku/images/difficulty_background.png", 1200, 600).getImageIcon();
 		easyIcon = new ImageHelper("src/com/sudoku/images/easy.png", 290, 170).getImageIcon();
 		mediumIcon = new ImageHelper("src/com/sudoku/images/medium.png", 270, 130).getImageIcon();
 		hardIcon = new ImageHelper("src/com/sudoku/images/hard.png", 270, 130).getImageIcon();
+		backIcon = new ImageHelper("src/com/sudoku/images/back.png", 70, 50).getImageIcon();
 		background = new JLabel(wallpaper);
 	}
 }
