@@ -39,6 +39,8 @@ class LoadMenu {
 	private Border framePadding;
 	private JPanel contentPanel;
 
+	private ListState listState = new ListState();
+
 	public LoadMenu() {
 		countOfState();
 		setImage();
@@ -111,7 +113,7 @@ class LoadMenu {
 			String tempName = "src/com/sudoku/savedata/" + listOfState.get(i);
 			File file = new File(tempName);
 
-			listOfLastModified.add(ListState.getLastModified(file));
+			listOfLastModified.add(listState.getLastModified(file));
 		}
 	}
 
@@ -123,7 +125,7 @@ class LoadMenu {
 
 	private void countOfState() {
 		ArrayList<String> tempList = new ArrayList<String>();
-		tempList = ListState.getAllState();
+		tempList = listState.getAllState();
 		listOfState.clear();
 		for(int i = 0; i < tempList.size(); i++) {
 			String nameState = tempList.get(i).replace(".txt", "");
