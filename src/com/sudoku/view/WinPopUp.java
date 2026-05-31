@@ -19,8 +19,9 @@ class WinPopUp {
 	private String backgroundColor = "#FFFFFF";
 	private JLabel winLabel;
 	private JLabel timeLabel;
+	private JLabel difficultyLabel;
 	private String time;
-	private final Font labelFont = SudokuFont.getFont("Comic Sans MS", 1, 14);
+	private final Font labelFont = SudokuFont.getFont("Comic Sans MS", 1, 13);
 	private Timer timer;
 
 	public WinPopUp(JFrame frame, Timer timer) {
@@ -40,19 +41,24 @@ class WinPopUp {
 		dialog.setLocationRelativeTo(null);
 		dialog.getContentPane().setLayout(null);
 
+		difficultyLabel = new JLabel(App.getDifficulty());
+		difficultyLabel.setBounds(210, 240, 50, 50);
+		difficultyLabel.setFont(labelFont);
+		difficultyLabel.setForeground(Color.decode("#adaba5"));
+		
 		timeLabel = new JLabel(timer.getTime());
-		timeLabel.setBounds(180, 245, 50, 50);
+		timeLabel.setBounds(180, 262, 50, 50);
 		timeLabel.setFont(labelFont);
 		timeLabel.setForeground(Color.decode("#adaba5"));
 		
 		winLabel = new JLabel(popupIcon);
-		winLabel.setBounds(0, 50, 400, 400);
-
+		winLabel.setBounds(0, 20, 400, 400);
 
 		okButton = new Button(okIcon, backgroundColor).getButton();
 		okButton.setBounds(145, 370, 120, 40);
 
 		addEvent();
+		dialog.add(difficultyLabel);
 		dialog.add(timeLabel);
 		dialog.add(winLabel);
 		dialog.add(okButton);

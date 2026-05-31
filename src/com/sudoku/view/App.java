@@ -70,7 +70,7 @@ class App {
 	private JButton quitButton = functionPad.getQuitButton(); 
 	private JButton pauseButton = functionPad.getPauseButton(); 
 
-	private String difficulty;
+	private static String difficulty;
 
 	private static String[][] solution = new String[9][9]; // Save solution
 																												 //
@@ -157,6 +157,10 @@ class App {
 		return frame;
 	}
 
+	public static String getDifficulty() {
+		return difficulty;
+	}
+
 	public void loadSudokuPuzzle() {
 		String[][] board = SaveData.getBoard();
 		boolean[][] editable = SaveData.getEditable();
@@ -194,7 +198,7 @@ class App {
 		}
 
 		if(difficulty.equals("EASY")) {
-			SudokuGenerator.removeCell(fields, 5);
+			SudokuGenerator.removeCell(fields, 1);
 		} else if(difficulty.equals("MEDIUM")) {
 			SudokuGenerator.removeCell(fields, 51);
 		} else if(difficulty.equals("HARD")) {

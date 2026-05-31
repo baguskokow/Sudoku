@@ -46,15 +46,19 @@ class PausePopUp {
 		timeLabel.setForeground(Color.decode("#adaba5"));
 
 		pauseLabel = new JLabel(popupIcon);
-		pauseLabel.setBounds(0, 70, 400, 400);
+		pauseLabel.setBounds(0, 50, 400, 400);
 
 		resumeButton = new Button(resumeIcon, backgroundColor).getButton();
-		resumeButton.setBounds(145, 370, 120, 40);
+		resumeButton.setBounds(138, 240, 120, 40);
+		
+		quitButton = new Button(quitIcon, backgroundColor).getButton();
+		quitButton.setBounds(138, 290, 120, 40);
 
 		addEvent();
 		dialog.add(timeLabel);
-		dialog.add(pauseLabel);
 		dialog.add(resumeButton);
+		dialog.add(quitButton);
+		dialog.add(pauseLabel);
 		dialog.setVisible(true);
 	}
 
@@ -63,11 +67,18 @@ class PausePopUp {
 			dialog.dispose();
 			timer.setStartTimer();
 		});
+
+		quitButton.addActionListener(e -> {
+			dialog.dispose();
+			pauseFrame.dispose();
+			new DashboardMenu();
+		});
 	}
 
 	private void setImage() {
-		popupIcon = new ImageHelper("src/com/sudoku/images/pausePopUp.png", 400, 400).getImageIcon();
-		resumeIcon = new ImageHelper("src/com/sudoku/images/resume.png", 50, 50).getImageIcon();
+		popupIcon = new ImageHelper("src/com/sudoku/images/pausePopUp.png", 500, 500).getImageIcon();
+		resumeIcon = new ImageHelper("src/com/sudoku/images/resume.png", 340, 340).getImageIcon();
+		quitIcon = new ImageHelper("src/com/sudoku/images/quitInPause.png", 300, 300).getImageIcon();
 		pauseLabel = new JLabel(popupIcon);
 	}
 }
