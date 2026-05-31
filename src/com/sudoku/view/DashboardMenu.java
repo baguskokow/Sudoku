@@ -54,6 +54,10 @@ class DashboardMenu {
 		menuFrame.setVisible(true);
 	}
 
+	public static void killFrame() {
+		menuFrame.dispose();
+	}
+
 	private void setQuitButton() {
 		quitButton = new Button(quitIcon, "#FFFFFF").getButton();
 		quitButton.setBounds(520, 420, 150, 50);

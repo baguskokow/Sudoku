@@ -21,10 +21,11 @@ class WinPopUp {
 	private JLabel timeLabel;
 	private String time;
 	private final Font labelFont = SudokuFont.getFont("Comic Sans MS", 1, 14);
+	private Timer timer;
 
-	public WinPopUp(JFrame frame, String time) {
+	public WinPopUp(JFrame frame, Timer timer) {
 		this.winFrame = frame;
-		this.time = time;
+		this.timer = timer;
 
 		initialized();
 	}
@@ -39,13 +40,14 @@ class WinPopUp {
 		dialog.setLocationRelativeTo(null);
 		dialog.getContentPane().setLayout(null);
 
-		winLabel = new JLabel(popupIcon);
-		winLabel.setBounds(0, 50, 400, 400);
-
-		timeLabel = new JLabel(Timer.getTime());
+		timeLabel = new JLabel(timer.getTime());
 		timeLabel.setBounds(180, 245, 50, 50);
 		timeLabel.setFont(labelFont);
 		timeLabel.setForeground(Color.decode("#adaba5"));
+		
+		winLabel = new JLabel(popupIcon);
+		winLabel.setBounds(0, 50, 400, 400);
+
 
 		okButton = new Button(okIcon, backgroundColor).getButton();
 		okButton.setBounds(145, 370, 120, 40);
@@ -54,7 +56,7 @@ class WinPopUp {
 		dialog.add(timeLabel);
 		dialog.add(winLabel);
 		dialog.add(okButton);
-		Timer.setStopTimer();	
+		timer.setStopTimer();
 		dialog.setVisible(true);
 	}
 

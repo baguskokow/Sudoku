@@ -28,6 +28,7 @@ class ButtonController implements ActionListener{
 	private static String[][] userInput = new String[9][9];
 	private static String[][] solution;
 	private App app;
+	private Timer timer = new Timer();
 	
 	public ButtonController(ArrayList<JButton> buttons, JTextField[][] field, App app) {
 		this.buttons = buttons;
@@ -37,6 +38,10 @@ class ButtonController implements ActionListener{
 		for(int i = 0; i < buttons.size(); i++) {
 			buttons.get(i).addActionListener(this);
 		}
+	}
+
+	public Timer getTimer() {
+		return timer;
 	}
 
 	public static String[][] getUserInput() {
@@ -130,8 +135,9 @@ class ButtonController implements ActionListener{
 			}
 		}
 
+		timer.setStopTimer();
 		SwingUtilities.invokeLater(() -> {
-			new WinPopUp(App.getFrame(), "05:00");
+			new WinPopUp(App.getFrame(), timer);
 		});
 	}
 

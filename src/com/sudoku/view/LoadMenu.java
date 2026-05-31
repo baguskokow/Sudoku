@@ -124,6 +124,7 @@ class LoadMenu {
 	private void countOfState() {
 		ArrayList<String> tempList = new ArrayList<String>();
 		tempList = ListState.getAllState();
+		listOfState.clear();
 		for(int i = 0; i < tempList.size(); i++) {
 			String nameState = tempList.get(i).replace(".txt", "");
 			listOfState.add(tempList.get(i));

@@ -49,7 +49,6 @@ class App {
 
 	private JTextField[][] fields = new JTextField[9][9]; // Untuk kolom-kolom kecil
 	private JTextField selectedField = null;
-	private ButtonController buttonController;
 	// Pembungkus UI
 	private JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 15));
 	private JPanel botPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
@@ -57,7 +56,9 @@ class App {
 	private JPanel boardPanel = new JPanel(new GridLayout(3, 3, 0, 0)); // Board Panel
 	private NumberPad numberPad = new NumberPad();																										 
 	private JPanel numberPanel = numberPad.getPanel();
-	private JPanel timePanel = Timer.getPanel();
+	private ButtonController buttonController = new ButtonController(numberPad.getAllButton(), fields, this);
+	private Timer timer = buttonController.getTimer();
+	private JPanel timePanel = timer.getPanel();
 
 	private FunctionPad functionPad = new FunctionPad();
 	private JPanel functionPanel = functionPad.getPanel();
@@ -94,7 +95,6 @@ class App {
 		} else {
 			generateSudokuPuzzle();
 		}
-		addButtonEvent();
 		undoButton.addActionListener(buttonController);
 		redoButton.addActionListener(buttonController);
 		hintButton.addActionListener(buttonController);
@@ -148,33 +148,11 @@ class App {
 		frame.add(botPanel, BorderLayout.SOUTH);
 
 		show();
-		Timer.setStartTimer();
-		if(isWin() == true) {
-			WinPopUp win = new WinPopUp(frame, Timer.getTime());	
-		};
+		timer.setStartTimer();
 	}
 
 	public static JFrame getFrame() {
 		return frame;
-	}
-
-	private boolean isWin() {
-		String[][] userInput = new String[9][9];
-		userInput = ButtonController.getUserInput();
-		if(userInput.length == solution.length) {
-			for(int row = 0; row < 9; row++) {
-				for(int col = 0; col < 9; col++) {
-					String currentUserInput = userInput[row][col];
-					String currentSolution = solution[row][col];
-					System.out.println(row + "," + col + "->" + currentUserInput);
-
-					if(!currentUserInput.equals(currentSolution)) {
-						return false;
-					}
-				}
-			}
-		}
-		return true;
 	}
 
 	public void loadSudokuPuzzle() {
@@ -223,10 +201,6 @@ class App {
 			
 		}
 
-	}
-
-	private void addButtonEvent() {
-		buttonController = new ButtonController(numberPad.getAllButton(), fields, this);
 	}
 
 	private void addCells() {

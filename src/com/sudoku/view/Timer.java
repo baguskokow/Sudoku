@@ -10,22 +10,23 @@ import javax.swing.*;
 import java.awt.*;
 
 class Timer {
-	private static JPanel timePanel = new JPanel(new BorderLayout());
-	private static JLabel timeLabel;
-	private static javax.swing.Timer timer;
-	private static int seconds = 0;
-	private static int detik;
-	private static int menit;
+	private JPanel timePanel = new JPanel(new BorderLayout());
+	private JLabel timeLabel = new JLabel("00;00");
+	private javax.swing.Timer timer;
+	private int seconds = 0;
+	private int detik;
+	private int menit;
 
-	public static JPanel getPanel() {
+	public Timer() {
+		initialized();
+	}
+	
+	public JPanel getPanel() {
 		initialized();
 		return timePanel;
 	}
 
-	public static void initialized() {
-		timeLabel = new JLabel();
-		timeLabel.setText("00:00");
-
+	public void initialized() {
 		timer = new javax.swing.Timer(1000, e -> {
 			seconds++;
 
@@ -40,15 +41,15 @@ class Timer {
 		timePanel.setPreferredSize(new Dimension(100, 50));
 	}
 
-	public static void setStartTimer() {
+	public void setStartTimer() {
 		timer.start();
 	}
 
-	public static void setStopTimer() {
+	public void setStopTimer() {
 		timer.stop();
 	}
 
-	public static String getTime() {
+	public String getTime() {
 		return timeLabel.getText();
 	}
 }
