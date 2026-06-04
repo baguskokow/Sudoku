@@ -26,6 +26,10 @@ class SudokuGenerator {
 		int index = 0;
 		for(int r = 0; r < 3; r++) {
 			for(int c = 0; c < 3; c++) {
+				while(!isValid(fields, startRow, startCol, String.valueOf(numbers.get(index)))) {
+					Collections.shuffle(numbers); // Acak angka
+					index = 0;																			
+				}
 				fields[startRow + r][startCol + c].setText(String.valueOf(numbers.get(index)));
 				index++;
 			}

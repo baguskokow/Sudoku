@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Stack;
+import java.util.Random;
 
 class ButtonController implements ActionListener{
 	private ArrayList<JButton> buttons = new ArrayList<JButton>();
@@ -26,7 +27,7 @@ class ButtonController implements ActionListener{
 	private Stack<SudokuStep> undoStack = new Stack<>();
 	private Stack<SudokuStep> redoStack = new Stack<>();
 	private static String[][] userInput = new String[9][9];
-	private static String[][] solution;
+	//private static String[][] solution;
 	private App app;
 	private Timer timer = new Timer();
 	
@@ -125,8 +126,21 @@ class ButtonController implements ActionListener{
 		
 	}
 
+	public void setSolution() {
+		String[][] solution = app.getSolution();
+
+		//Debugging
+		for(int i = 0; i < 9; i++) {
+			for(int j = 0; j < 9; j++) {
+				System.out.printf("%s ", solution[i][j]);
+			}
+			System.out.println();
+		}
+	}
+
 	public void checkWin() {
-		solution = App.getSolution();
+		JTextField[][] cells = app.getCell();
+		String[][] solution = app.getSolution();
 		syncNumber();
 
 		for(int r = 0; r < 9; r++) {
@@ -164,13 +178,42 @@ class ButtonController implements ActionListener{
 	}
 
 	public void executeHint() {
-		String[][] solution = App.getSolution();
+		String[][] solution = app.getSolution();
+		ArrayList<Cell> emptyCell = new ArrayList<Cell>();
+
 		if(activeRow == -1 || activeCol == -1) {
 			return;
 		}
 
-		fields[activeRow][activeCol].setText(solution[activeRow][activeCol]);
-		userInput[activeRow][activeCol] = solution[activeRow][activeCol];
+		// Call setSolution for debugging
+		//setSolution();
+
+		Random rand = new Random();
+
+		int randRow = rand.nextInt(9);
+		int randCol = rand.nextInt(9);
+
+		for(int r = 0; r < 9; r++) {
+			for(int c = 0; c < 9; c++) {
+				if(fields[r][c].getText().equals("") && fields[r][c].isEditable() == true) {
+					emptyCell.add(new Cell(r, c));
+				}
+			}
+		}
+
+		
+		if(emptyCell.isEmpty() == true) {
+			return;
+		}
+
+		int randomIndex = rand.nextInt(emptyCell.size());
+		Cell targetCell = emptyCell.get(randomIndex);
+
+		int rowCell = targetCell.row;
+		int colCell = targetCell.col;
+
+		fields[rowCell][colCell].setText(solution[rowCell][colCell]);
+
 		checkWin();
 	}
 

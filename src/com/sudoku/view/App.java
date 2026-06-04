@@ -21,8 +21,12 @@ class App {
 	private final int HEIGHT_FRAME = 600;
 	private final String COLOR_MINT = "#A2D1B3";
 	private final String COLOR_WHITE = "#FFFFFF";
+	private final String COLOR_RED = "#dd1111";
+	private final String COLOR_BLUE = "#b1f8fa";
+	private final String COLOR_GRAY = "#E8E8E8";
 	private final String LINE_COLOR = "#4a4444";
 	private final Font textFieldFont = SudokuFont.getFont("Inter", 1, 18); 	
+	private final Font boldFont = SudokuFont.getFont("Inter", 1, 18); 	
 	private ImageIcon clearIcon;
 	private String savedTime;
 	
@@ -85,7 +89,7 @@ class App {
 		initialized();
 	}
 
-	public static String[][] getSolution() {
+	public String[][] getSolution() {
 			return solution;
 	}
 
@@ -102,6 +106,7 @@ class App {
 		} else {
 			generateSudokuPuzzle();
 		}
+		updateCellColor();
 		undoButton.addActionListener(buttonController);
 		redoButton.addActionListener(buttonController);
 		hintButton.addActionListener(buttonController);
@@ -163,6 +168,10 @@ class App {
 		timer.setStartTimer();
 	}
 
+	public JTextField[][] getCell() {
+		return fields;
+	}
+
 	public static JFrame getFrame() {
 		return frame;
 	}
@@ -198,7 +207,9 @@ class App {
 		for(int row = 0; row < 9; row++) {
 			for(int col = 0; col < 9; col++) {
 				solution[row][col] = fields[row][col].getText();
+				System.out.printf("%s ", solution[row][col]);
 			}
+			System.out.println();
 		}
 
 		if(success) {
@@ -234,6 +245,24 @@ class App {
 		}
 	}
 
+	private void updateCellColor() {
+		for(int row = 0; row < 9; row++) {
+			for(int col = 0; col < 9; col++) {
+				int boxIndex = (row / 3) * 3 + (col / 3);
+
+				if(!fields[row][col].isEditable()) {
+					fields[row][col].setBackground(Color.decode(COLOR_BLUE));
+					//fields[row][col].setBackground(Color.decode(COLOR_GRAY));
+			//	} //else if(boxIndex % 2 != 0) {
+					//fields[row][col].setBackground(Color.decode(COLOR_MINT));
+				} else {
+					fields[row][col].setBackground(Color.decode(COLOR_WHITE));
+				}
+				
+			}
+		}
+	}
+
 	private void initTextField() {
 		for(int row = 0; row < 9; row++) {
 			final int currentRow = row;
@@ -246,13 +275,7 @@ class App {
 				fields[row][col].setHorizontalAlignment(JTextField.CENTER);
 				fields[row][col].setFont(textFieldFont);
 				fields[row][col].setPreferredSize(new Dimension(50, 50));
-
-				int boxIndex = (row / 3) * 3 + (col / 3);
-				if(boxIndex % 2 != 0) {
-					fields[row][col].setBackground(Color.decode(COLOR_MINT));
-				} else {
-					fields[row][col].setBackground(Color.decode(COLOR_WHITE));
-				}
+				fields[row][col].setBackground(Color.decode(COLOR_WHITE));
 
 				fields[row][col].addFocusListener(new FocusListener() {
 					@Override
@@ -269,8 +292,8 @@ class App {
 						JTextField source = (JTextField) event.getSource();
 						source.setForeground(Color.BLACK);
 
-						if(boxIndex % 2 != 0) {
-							source.setBackground(Color.decode(COLOR_MINT));
+						if(!source.isEditable()) {
+							source.setBackground(Color.decode(COLOR_GRAY));
 						} else {
 							source.setBackground(Color.decode(COLOR_WHITE));
 						}

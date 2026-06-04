@@ -11,7 +11,8 @@ import java.awt.*;
 
 class Timer {
 	private JPanel timePanel = new JPanel(new BorderLayout());
-	private JLabel timeLabel = new JLabel("00;00");
+	private JLabel timeLabel;
+	private final Font timerFont = SudokuFont.getFont("Inter", 1, 14);
 	private javax.swing.Timer timer;
 	private int seconds = 0;
 	private int detik;
@@ -26,6 +27,10 @@ class Timer {
 	}
 
 	public void initialized() {
+		timeLabel = new JLabel();	
+		timeLabel.setFont(timerFont);
+		timeLabel.setText("00:00");
+
 		timer = new javax.swing.Timer(1000, e -> {
 			seconds++;
 
