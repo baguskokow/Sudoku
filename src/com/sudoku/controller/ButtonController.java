@@ -31,11 +31,13 @@ class ButtonController implements ActionListener{
 	//private static String[][] solution;
 	private App app;
 	private Timer timer = new Timer();
+	private SoundManager audioGame;
 	
-	public ButtonController(ArrayList<JButton> buttons, JTextField[][] field, App app) {
+	public ButtonController(ArrayList<JButton> buttons, JTextField[][] field, App app, SoundManager audioGame) {
 		this.buttons = buttons;
 		this.fields = field;
 		this.app = app;
+		this.audioGame = audioGame;
 
 		for(int i = 0; i < buttons.size(); i++) {
 			buttons.get(i).addActionListener(this);
@@ -88,6 +90,7 @@ class ButtonController implements ActionListener{
 		}
 		
 		if(textTombol.equals("QUIT")) {
+			audioGame.stopBackgroundMusic();
 			executeQuit();
 			return;
 		}

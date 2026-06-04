@@ -62,7 +62,8 @@ class App {
 	private JPanel boardPanel = new JPanel(new GridLayout(3, 3, 0, 0)); // Board Panel
 	private NumberPad numberPad = new NumberPad();																										 
 	private JPanel numberPanel = numberPad.getPanel();
-	private ButtonController buttonController = new ButtonController(numberPad.getAllButton(), fields, this);
+	private SoundManager audioGame = new SoundManager();
+	private ButtonController buttonController = new ButtonController(numberPad.getAllButton(), fields, this, audioGame);
 	private Timer timer = buttonController.getTimer();
 	private JPanel timePanel = timer.getPanel();
 	private HintLeft hintLeft = new HintLeft(buttonController);
@@ -77,6 +78,7 @@ class App {
 	private JButton saveButton = functionPad.getSaveButton(); 
 	private JButton quitButton = functionPad.getQuitButton(); 
 	private JButton pauseButton = functionPad.getPauseButton(); 
+
 
 	private static String difficulty;
 
@@ -113,6 +115,7 @@ class App {
 		} else {
 			generateSudokuPuzzle();
 		}
+		audioGame.playBackgroundMusic("src/com/sudoku/Sounds/Animal-Crrossing.wav");
 		updateCellColor();
 		undoButton.addActionListener(buttonController);
 		redoButton.addActionListener(buttonController);

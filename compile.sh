@@ -15,6 +15,7 @@ javac -d bin src/com/sudoku/Main.java \
 	src/com/sudoku/model/SaveData.java \
 	src/com/sudoku/model/ListState.java \
 	src/com/sudoku/model/Cell.java \
+	src/com/sudoku/model/SoundManager.java \
 	src/com/sudoku/view/FunctionPad.java \
 	src/com/sudoku/view/LoadMenu.java \
 	src/com/sudoku/view/Timer.java \
