@@ -23,6 +23,7 @@ class ButtonController implements ActionListener{
 	private String text;
 	private int activeRow;
 	private int activeCol;
+	private int totalHint = 0;
 	private boolean isEditable;
 	private Stack<SudokuStep> undoStack = new Stack<>();
 	private Stack<SudokuStep> redoStack = new Stack<>();
@@ -43,6 +44,10 @@ class ButtonController implements ActionListener{
 
 	public Timer getTimer() {
 		return timer;
+	}
+
+	public int getTotalHint() {
+		return totalHint;
 	}
 
 	public static String[][] getUserInput() {
@@ -72,6 +77,7 @@ class ButtonController implements ActionListener{
 		}
 
 		if(textTombol.equals("HINT")) {
+			totalHint++;
 			executeHint();
 			return;
 		}
@@ -185,13 +191,10 @@ class ButtonController implements ActionListener{
 			return;
 		}
 
-		// Call setSolution for debugging
-		//setSolution();
+		app.updateHintClicked();
+
 
 		Random rand = new Random();
-
-		int randRow = rand.nextInt(9);
-		int randCol = rand.nextInt(9);
 
 		for(int r = 0; r < 9; r++) {
 			for(int c = 0; c < 9; c++) {
@@ -212,7 +215,9 @@ class ButtonController implements ActionListener{
 		int rowCell = targetCell.row;
 		int colCell = targetCell.col;
 
-		fields[rowCell][colCell].setText(solution[rowCell][colCell]);
+		if(totalHint <= 5) {
+			fields[rowCell][colCell].setText(solution[rowCell][colCell]);
+		}
 
 		checkWin();
 	}

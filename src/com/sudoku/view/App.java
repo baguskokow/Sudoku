@@ -55,6 +55,7 @@ class App {
 	private JTextField[][] fields = new JTextField[9][9]; // Untuk kolom-kolom kecil
 	private JTextField selectedField = null;
 	// Pembungkus UI
+	private JPanel informationPanel = new JPanel(new BorderLayout());
 	private JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 15));
 	private JPanel botPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
 	
@@ -64,6 +65,8 @@ class App {
 	private ButtonController buttonController = new ButtonController(numberPad.getAllButton(), fields, this);
 	private Timer timer = buttonController.getTimer();
 	private JPanel timePanel = timer.getPanel();
+	private HintLeft hintLeft = new HintLeft(buttonController);
+	private JPanel hintLeftPanel = hintLeft.getPanel(); 
 
 	private FunctionPad functionPad = new FunctionPad();
 	private JPanel functionPanel = functionPad.getPanel();
@@ -87,6 +90,10 @@ class App {
 		this.difficulty = difficulty;																	
 		this.savedTime = savedTime;
 		initialized();
+	}
+
+	public void updateHintClicked() {
+		hintLeft.updateHintLeft();
 	}
 
 	public String[][] getSolution() {
@@ -155,8 +162,11 @@ class App {
 		botPanel.add(numberPanel);
 		botPanel.add(functionPanel);
 
+		informationPanel.add(timePanel, BorderLayout.CENTER);
+		informationPanel.add(hintLeftPanel, BorderLayout.EAST);
+
 		setPadding(); // Frame Padding
-		frame.add(timePanel, BorderLayout.NORTH);
+		frame.add(informationPanel, BorderLayout.NORTH);
 		frame.add(boardPanel, BorderLayout.CENTER);
 		frame.add(botPanel, BorderLayout.SOUTH);
 

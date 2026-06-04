@@ -41,8 +41,6 @@ class Timer {
 		});
 
 		timePanel.add(timeLabel, BorderLayout.CENTER);
-		timePanel.setBorder(BorderFactory.createEmptyBorder(20, 280, 20, 20));
-		timePanel.setPreferredSize(new Dimension(100, 50));
 	}
 
 	public void setStartTimer() {
