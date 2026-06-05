@@ -122,6 +122,7 @@ class ButtonController implements ActionListener{
 				undoStack.push(new SudokuStep(activeRow, activeCol, oldValue, newValue));
 				fields[activeRow][activeCol].setText(newValue);
 				userInput[activeRow][activeCol] = newValue;
+				highlightConflict(activeRow, activeCol, newValue);
 				checkWin();
 			}
 		}
@@ -254,5 +255,45 @@ class ButtonController implements ActionListener{
 		undoStack.push(lastStep);
 		userInput[lastStep.row][lastStep.col] = lastStep.newValue;
 		checkWin();
+	}
+
+	public void highlightConflict(int row, int col, String value) {
+		app.updateCellColor();
+		
+		if(value.equals("") || value == null) {
+			return;
+		}
+
+		// Check baris
+		for(int c = 0; c < 9; c++) {
+			if(c != col && fields[row][c].getText().equals(value)) {
+				fields[row][c].setBackground(Color.decode("#FF6B6B"));
+				fields[row][col].setBackground(Color.decode("#FF6B6B"));
+			}
+		}
+
+		// Check kolom
+		for(int r = 0; r < 9; r++) {
+			if(r != row && fields[r][col].getText().equals(value)) {
+				fields[r][col].setBackground(Color.decode("#FF6B6B"));
+				fields[row][col].setBackground(Color.decode("#FF6B6B"));
+			}
+		}
+
+		int boxRow = (row / 3) * 3;
+		int boxCol = (col / 3) * 3;
+
+		for(int r = 0; r < 3; r++) {
+			for(int c = 0; c < 3; c++) {
+				int cr = boxRow + r;
+				int cc = boxCol + c;
+
+				if((cr != row || cc != col) && fields[cr][cc].getText().equals(value)) {
+					fields[cr][cc].setBackground(Color.decode("#FF6B6B"));
+					fields[row][col].setBackground(Color.decode("#FF6B6B"));
+				}
+			}
+		}
+
 	}
 }

@@ -271,7 +271,7 @@ class App {
 		}
 	}
 
-	private void updateCellColor() {
+	public void updateCellColor() {
 		for(int row = 0; row < 9; row++) {
 			for(int col = 0; col < 9; col++) {
 				int boxIndex = (row / 3) * 3 + (col / 3);
