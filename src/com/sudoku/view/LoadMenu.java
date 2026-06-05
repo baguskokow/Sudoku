@@ -80,8 +80,9 @@ class LoadMenu {
 			buttonState.addActionListener(e -> {
 				SaveData.read(nameState);
 				String savedTime = SaveData.getSavedTime();
+				int totalHintClicked = SaveData.getSavedHintClicked();
 				loadFrame.dispose();
-				new App(null, savedTime);
+				new App(null, savedTime, totalHintClicked);
 			});	
 		}
 	}

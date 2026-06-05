@@ -32,12 +32,15 @@ class ButtonController implements ActionListener{
 	private App app;
 	private Timer timer = new Timer();
 	private SoundManager audioGame;
+	private HintLeft hintLeft;
+	private int totalHintLeftClicked;
 	
 	public ButtonController(ArrayList<JButton> buttons, JTextField[][] field, App app, SoundManager audioGame) {
 		this.buttons = buttons;
 		this.fields = field;
 		this.app = app;
 		this.audioGame = audioGame;
+
 
 		for(int i = 0; i < buttons.size(); i++) {
 			buttons.get(i).addActionListener(this);
@@ -162,15 +165,20 @@ class ButtonController implements ActionListener{
 				}
 			}
 		}
-
 		timer.setStopTimer();
 		SwingUtilities.invokeLater(() -> {
-			new WinPopUp(App.getFrame(), timer);
+			new WinPopUp(App.getFrame(), timer, app);
 		});
 	}
 
+	public void setHintLeft(HintLeft hintLeft) {
+		this.hintLeft = hintLeft;
+		this.totalHintLeftClicked = hintLeft.getTotalHintClicked();
+	}
+
 	private void executeSave() {
-		SaveData.save(fields, timer);
+		SaveData.save(fields, timer, app.getDifficulty(), hintLeft.getTotalHintClicked(), app.getSolution());
+		System.out.println(hintLeft);
 		Notification.show("Game Saved!");
 	}
 
@@ -196,7 +204,6 @@ class ButtonController implements ActionListener{
 
 		app.updateHintClicked();
 
-
 		Random rand = new Random();
 
 		for(int r = 0; r < 9; r++) {
@@ -207,7 +214,6 @@ class ButtonController implements ActionListener{
 			}
 		}
 
-		
 		if(emptyCell.isEmpty() == true) {
 			return;
 		}

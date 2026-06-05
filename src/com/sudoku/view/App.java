@@ -66,8 +66,8 @@ class App {
 	private ButtonController buttonController = new ButtonController(numberPad.getAllButton(), fields, this, audioGame);
 	private Timer timer = buttonController.getTimer();
 	private JPanel timePanel = timer.getPanel();
-	private HintLeft hintLeft = new HintLeft(buttonController);
-	private JPanel hintLeftPanel = hintLeft.getPanel(); 
+	private HintLeft hintLeft;
+	private JPanel hintLeftPanel; 
 
 	private FunctionPad functionPad = new FunctionPad();
 	private JPanel functionPanel = functionPad.getPanel();
@@ -80,21 +80,25 @@ class App {
 	private JButton pauseButton = functionPad.getPauseButton(); 
 
 
-	private static String difficulty;
+	private String difficulty;
+	private int totalHintClicked;
 
 	private static String[][] solution = new String[9][9]; // Save solution
 																												 //
 	public App(String difficulty) {
-		this(difficulty, null);
+		this(difficulty, null, 0);
 	}
 
-	public App(String difficulty, String savedTime) { // Constructor
+	public App(String difficulty, String savedTime, int totalHintClicked) { // Constructor
 		this.difficulty = difficulty;																	
 		this.savedTime = savedTime;
+		this.totalHintClicked = totalHintClicked;
 		initialized();
+		buttonController.setHintLeft(hintLeft);
 	}
 
 	public void updateHintClicked() {
+		System.out.println("hintLeft di App: " + hintLeft); // ← tambah ini
 		hintLeft.updateHintLeft();
 	}
 
@@ -110,6 +114,13 @@ class App {
 		// Init containers
 		initContainer();
 		initTextField();
+		
+		hintLeft = new HintLeft();
+		hintLeft.setTotalHintClicked(totalHintClicked);
+		hintLeft.refreshHintLeft();
+		hintLeftPanel = hintLeft.getPanel(); 
+		buttonController.setHintLeft(hintLeft);
+		
 		if(difficulty == null) {
 			loadSudokuPuzzle();
 		} else {
@@ -177,7 +188,7 @@ class App {
 		if(savedTime != null) {
 			timer.setTime(savedTime);
 		}
-		
+
 		timer.setStartTimer();
 	}
 
@@ -189,13 +200,16 @@ class App {
 		return frame;
 	}
 
-	public static String getDifficulty() {
+	public String getDifficulty() {
 		return difficulty;
 	}
 
 	public void loadSudokuPuzzle() {
 		String[][] board = SaveData.getBoard();
 		boolean[][] editable = SaveData.getEditable();
+		difficulty = SaveData.getSavedDifficulty();
+		hintLeft.setTotalHintClicked(SaveData.getSavedHintClicked());
+
 		for(int r = 0; r < 9; r++) {
 			for(int c = 0; c < 9; c++) {
 				if(board[r][c].equals("0")) {
@@ -207,6 +221,7 @@ class App {
 				fields[r][c].setEditable(editable[r][c]);
 			}
 		}
+		solution = SaveData.getSolution();
 	}
 
 	private void generateSudokuPuzzle() {
@@ -220,9 +235,7 @@ class App {
 		for(int row = 0; row < 9; row++) {
 			for(int col = 0; col < 9; col++) {
 				solution[row][col] = fields[row][col].getText();
-				System.out.printf("%s ", solution[row][col]);
 			}
-			System.out.println();
 		}
 
 		if(success) {

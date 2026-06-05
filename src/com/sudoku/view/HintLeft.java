@@ -15,9 +15,9 @@ class HintLeft {
 	private final Font hintFont = SudokuFont.getFont("Inter", 1, 14);
 	private int totalHintClicked = 0;
 
-	public HintLeft(ButtonController buttonController) {
+	public HintLeft() {
 		initialized();
-		this.totalHintClicked = buttonController.getTotalHint();
+		//this.totalHintClicked = buttonController.getTotalHint();
 	}
 
 	private void initialized() {
@@ -26,6 +26,11 @@ class HintLeft {
 
 		hintLeftPanel.add(hintLeftLabel, BorderLayout.CENTER);
 		hintLeftPanel.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
+	}
+
+	public void refreshHintLeft() {
+		String format = "Hint Left : " + totalHintClicked + " / 5";
+		hintLeftLabel.setText(format);
 	}
 
 	public void updateHintLeft() {
@@ -38,5 +43,13 @@ class HintLeft {
 
 	public JPanel getPanel() {
 		return hintLeftPanel;
+	}
+
+	public int getTotalHintClicked() {
+		return totalHintClicked;
+	}
+
+	public void setTotalHintClicked(int totalHintClicked) {
+		this.totalHintClicked = totalHintClicked;
 	}
 }
